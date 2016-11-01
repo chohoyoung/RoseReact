@@ -1,73 +1,24 @@
 Important Update
 ================
 
-Facebook released a tool to create React Apps with no need for configurations or boilerplates. If you're just begining to learn React, you might want to use create-react-app instead of using this boilerplate project.
+# 1. 시작하기
+## 1.1 시작하기 전에
+### 1.1.1 Node.js와 npm
+Nodejs는 Javascript서버고 npm(node Package manager) 의존성 관리 도구이다. nodejs홈페이지가서 다운받아 놓자.
+### 1.1.2 JavaScript ES6
+React에선 함수형 패턴을 권장한다. 또한 ES6의 여러 기능을 사용한다.
+## 1.2 React란?
+Javascript와 XML을 이용해 조합형 사용자 인터페이스를 구축하는 엔진.
+## 1.3 React 장점
+### 1.3.1 편리한 반응형 렌더링
+### 1.3.2 순수 Javascript를 이용한 컴포넌트 기반 개발
+### 1.3.3 문서 모델의 유연한 추상화
+## 1.4 컴포넌트
+React에선 기능 하나하나를 컴포넌트로 분할해서 사용하는게 중요하다. 컴포넌트는 고려해야할 것들이 있다.
 
-```sh
-npm install -g create-react-app
+1. 컴포넌트는 단일 관심사를 가져야한다.
+2. 프로젝트의 와이어프레임과 레이아웃을 분석하면 컴포넌트의 계층(부모자식구조)을 알수 있다.
+3. 데이터 모델을 통해서도 컴포넌트 계층을 잡을 수 있다.
 
-create-react-app my-app
-cd my-app/
-npm start
-
-```
-
-Then open [http://localhost:3000/](http://localhost:3000/) to see your app.<br>
-When you’re ready to deploy to production, create a minified bundle with `npm run build`.
-
-<img src='https://camo.githubusercontent.com/506a5a0a33aebed2bf0d24d3999af7f582b31808/687474703a2f2f692e696d6775722e636f6d2f616d794e66434e2e706e67' width='600' alt='npm start'>
-
-For more information on create-react-app, take a look at [Dan Abramov's blog post ](https://facebook.github.io/react/blog/2016/07/22/create-apps-with-no-configuration.html) and the [Github repository](https://github.com/facebookincubator/create-react-app)
-
-Behind the scenes, create-react-app uses Webpack and Babel. 
-
-You might still want to use this boilerplate if you want to see how Webpack and Babel can be manually configured in a project.
-
-React App Boilerplate
-=====================
-
-Quickstart project template for learning React.
-
-### Objective
-
-This boilerplate is purposefully simple to show the minimal setup needed to create React projects with Webpack and Babel. It aims to be a starting point for learning React, with low cognitive load and as such avoids having many separate config files and advanced configuration options, while providing a solid foundation for new React projects.
-
-### Usage
-**Clone this repository**
-```
-git clone git@github.com:pro-react/react-app-boilerplate.git
-```
-
-**Install**
-```
-npm install
-```
-
-**Start the application in development mode**
-```
-npm start
-```
-
-Open http://localhost:8080 in your browser.
-
-Static files are served from the `public` folder, project JavaScript files are bundled from the `app` folder.
-
-**When ready, build for production**
-```
-npm run build
-```
-
-This will generate a minimized bundle.js file on the `public` folder.
-
-
-### Missing Features
-
-This boilerplate focuses solely on transforming and bundling javascript files - all other static files are served directly from the public folder without any processing. While useful for learning React, this setup doesn't use Webpack and Babel in their full capabilities - which include transforming and bundling projects assets (such as stylesheets), modularizing CSS, hot reloading and etc. Please refer to [Pro React Appendix A](http://www.pro-react.com/materials/) to learn more about Webpack. If you are looking for a feature-rich bootstrap for React, take a look at [React App Advanced Boilerplate](//github.com/pro-react/react-app-advanced-boilerplate).
-
-
-### Dependencies
-
-* React & React-DOM
-* Webpack & webpack-dev-server
-* Babel Core
-* Babel Loader (With "es2015" and "react" presets)
+### 1.4.1 컴포넌트 만들기
+컴포넌트는 상향식, 하향식의 두가지 접근법이 있다. 상향식은 부모 > 자식 순서로 만드는거고 하양식은 자식 > 부모 형태로 만든다.
