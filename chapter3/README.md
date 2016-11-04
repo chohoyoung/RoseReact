@@ -65,3 +65,44 @@ Custom한 유효성 검사기를 만들 수 있는데 유효성검사기는 속�
 3. 공통 소유자나 계층에서 더 상위에 있는 다른 컴포넌트가 상태를 소유해야 한다.
 4. 해당 상태를 수유하기에 적절한 컴포넌트를 찾을 수 없는 경우 단순히 상태를 저장하기 위한 컴포넌트를 새로 만들고 계층에서 공통 소유자 컴포넌트 위에 추가한다.
 
+### 3.2.3 데이터 흐름과 컴포넌트 통신
+React에서 데이터는 위에서 아래쪽으로 전달된다. 리엑트는 이런 작동방식을 명시적으로 드러낸다. 만약 자식 컴포넌트가 부모 컴포넌트와 통신해야 하는 경우가 있는데 이런 경우는 부모 컴포넌트가 속성으로 전달한 콜백을 사용하는 것이다.
+
+     handleUserInput(searchTerm) {
+        this.setState({filterText:searchTerm});
+    }
+
+    render() {
+        return(
+            <div>
+                <SearchBar filterText={this.state.filterText} onUserInput={this.handleUserInput.bind(this)} />
+                ...
+            </div>
+        )
+    }
+    
+    class SearchBar extends Component {
+        handleChange(event) {
+            this.props.onUserInput(event.target.value);
+        }
+    
+        render() {
+            return <input type="search" placeholder="search" value={this.props.filterText} onChange={this.handleChange.bind(this)} />
+        }
+    }
+
+## 3.3 컴포넌트 수명주기
+컴포넌트를 만들때 컴포넌트의 생명주기의 특정 시점에 메소드를 호출 할 수 있다. 수명주기에 대한 이해는 성능을 최적화 하고 flux 아키텍처에서 컴포넌트 구성하는데 필수적인 조건이다.
+### 3.3.1 수명주기 단계와 메서드
+수명주기는 초기 컴포넌트 생성 단계, 상태와 속성 변경, 트리거된 업데이트, 컴포넌트 unmount 단계 간의 차이를 명확히 알아햐 한다.
+#### 3.3.1.1 Mounting (초기 컴포넌트 생성) 단계
+Mounting시에 아래와 같은 메소드를 순서대로 호출 한다.
+
+1. constructor
+2. componentWillMount : 초기 렌더링을 수행하기 직전 한 번 호출된다. 이 단계에서 state를 설정하더라도 렌더링이 다시 trigger되지 않는다.
+3. render
+4. componentDidMount : 초기 렌더링을 수행한 직후 한번 호출 된다. 이시점에서는 컴포넌트에 대한 DOM이 생성되며 이를 데이터 가져오기등의 작업에 사용할 수 있다.
+
+#### 3.3.1.2 Unmounting 단계
+
+1. componentWillUnMount : 컴포넌트가 DOM에서 unmounting되기 직전에 호출된다. 이 메서드는 정리 작업을 할 때 유용하다.(Mounting 시점에 생성된 timer를 제거 할때)

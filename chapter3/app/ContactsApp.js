@@ -3,11 +3,22 @@ import { render } from "react-dom";
 
 // 주 컴포넌트이며 SearchBar와 ContactList를 랜더링한다.
 class ContactsApp extends Component {
+    constructor() {
+        super();
+        this.state = {
+            filterText : ""
+        };
+    }
+
+    handleUserInput(searchTerm) {
+        this.setState({filterText:searchTerm});
+    }
+
     render() {
         return(
             <div>
-                <SearchBar />
-                <ContactList contacts={this.props.contacts} />
+                <SearchBar filterText={this.state.filterText} onUserInput={this.handleUserInput.bind(this)} />
+                <ContactList contacts={this.props.contacts} filterText={this.state.filterText} />
             </div>
         )
     }
@@ -18,16 +29,28 @@ ContactsApp.propTypes = {
 }
 
 class SearchBar extends Component {
-    render() {
-        return <input type="search" placeholder="search" />
+    handleChange(event) {
+        this.props.onUserInput(event.target.value);
     }
+
+    render() {
+        return <input type="search" placeholder="search" value={this.props.filterText} onChange={this.handleChange.bind(this)} />
+    }
+}
+
+// filterText는 문자열이면서 필수 값이다.
+SearchBar.propTypes = {
+    filterText : PropTypes.string.isRequired,
+    onUserInput : PropTypes.func.isRequired
 }
 
 class ContactList extends Component {
     render() {
+        let filteredContacts = this.props.contacts.filter(contact => contact.name.includes(this.props.filterText));
+
         return(
             <ul>
-                {this.props.contacts.map(
+                {filteredContacts.map(
                     (contact) => <ContactItem key={contact.email} name={contact.name} email={contact.email} />
                 )}
             </ul>
