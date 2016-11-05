@@ -1,5 +1,59 @@
 import React, { Component, PropTypes } from 'react';
 import { render } from "react-dom";
+import update from "react-addons-update";
+
+class ContactsAppContainer extends Component {
+    constructor() {
+        super();
+        this.state = {
+            contacts: []
+        };
+    }
+
+    // 초기 랜더링 후 호출
+    componentDidMount() {
+        let ori = {
+            name : 'KAKAI',
+            status : {
+                power : 10,
+                agility : 5
+            },
+            item : [
+                { name : 'baba sword', attackPoint : 10 },
+                { name : 'baba hat', dependsPoint : 3 }
+            ]
+        };
+
+        // 새로운 Ori를 만들고 복사본을 생성할 수 있다.
+        let newOri1 = update(ori, { item: {$push: [{ name: 'baba consoup', hpPoint : 10 }]}});
+        // index의 위치를 통해 값을 update할 수 있다.
+        let newOri2 = update(ori, {
+            item : {
+                0: {$set : { name: "baba Hamer", attackPoint : 20 }}
+            }
+        });
+
+        console.log(ori);
+        console.log(newOri1);
+        console.log(newOri2);
+
+        fetch('./contacts.json')
+            .then((response) => response.json())
+            .then((responseData) => {
+                console.log(responseData)
+                this.setState({contacts: responseData})
+            })
+            .catch((error) => {
+                console.log('Fatch Error', error)
+            });
+    }
+
+    render() {
+        return (
+            <ContactsApp contacts={this.state.contacts} />
+        );
+    }
+}
 
 // 주 컴포넌트이며 SearchBar와 ContactList를 랜더링한다.
 class ContactsApp extends Component {
@@ -73,14 +127,4 @@ ContactItem.propTypes = {
     email : PropTypes.string.isRequired
 }
 
-let contacts = [
-    { name : "Vailbration", email : "vailbration@gmail.com" },
-    { name : "Don'tWorry", email : "dontworry@gmail.com" },
-    { name : "Mama", email : "mama@gmail.com" },
-    { name : "StandByMe", email : "sbm@gmail.com" },
-    { name : "Song", email : "song@gmail.com" },
-    { name : "Many", email : "many@gmail.com" },
-    { name : "Incredible", email : "incredible@gmail.com" }
-];
-
-render(<ContactsApp contacts={contacts}/>, document.getElementById("root"));
+render(<ContactsAppContainer />, document.getElementById("root"));

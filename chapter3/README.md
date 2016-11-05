@@ -105,4 +105,101 @@ Mounting시에 아래와 같은 메소드를 순서대로 호출 한다.
 
 #### 3.3.1.2 Unmounting 단계
 
-1. componentWillUnMount : 컴포넌트가 DOM에서 unmounting되기 직전에 호출된다. 이 메서드는 정리 작업을 할 때 유용하다.(Mounting 시점에 생성된 timer를 제거 할때)
+1. componentWillUnMount : 컴포넌트가 DOM에서 unmounting되기 직전에 호출된다. 이 메서드는 정리 작업을 할 때 유용하다.(Mounting 시점에 생성된 timer를 제거 할때)2
+
+#### 3.3.1.3 Update Prop(속성 변경)
+
+1. componentWillReceiveProps : 컴포넌트가 새 속성을 받을 때 호출된다. 이 함수 안에서 this.setState()를 호출해도 추가로 렌더링이 트리거 되지 않는다.
+2. shouldComponentUpdate : shouldComponentUpdate는 render 함수보다 먼저 호출되는 특수한 함수이며, 해당 컴포넌트의 랜더링을 생략할 수 있는 기회를 제공한다.
+3. componentWillUpdate : 새로운 속성이나 상태를 수신하고 렌더링하기 직전에 호출된다. 이 함수는 예정된 업데이트를 준비하는 데만 이용해야하며, 업데이트 자체를 트리거 하지 않아야 하므로 this.setState를 통한 상태 변경은 허용 안한다.
+4. render
+5. componentDidUpdate : 컴포넌트 업데이트가 DOM으로 Flush된 직후 호출된다.
+
+#### 3.3.1.4 Update Stat(상태 변경)
+
+1. shouldComponentUpdate : shouldComponentUpdate는 render 함수보다 먼저 호출되는 특수한 함수이며, 해당 컴포넌트의 랜더링을 생략할 수 있는 기회를 제공한다.
+2. componentWillUpdate : 새로운 속성이나 상태를 수신하고 렌더링하기 직전에 호출된다. 이 함수는 예정된 업데이트를 준비하는 데만 이용해야하며, 업데이트 자체를 트리거 하지 않아야 하므로 this.setState를 통한 상태 변경은 허용 안한다.
+3. render
+4. componentDidUpdate : 컴포넌트 업데이트가 DOM으로 Flush된 직후 호출된다.
+
+#### 3.3.1.5 수명주기 사용
+    
+    class ContactsAppContainer extends Component {
+        constructor() {
+            super();
+            this.state = {
+                contacts: []
+            };
+        }
+    
+        // 초기 랜더링 후 호출
+        componentDidMount() {
+            fetch('./contacts.json')
+                .then((response) => response.json())
+                .then((responseData) => {
+                    console.log(responseData)
+                    this.setState({contacts: responseData})
+                })
+                .catch((error) => {
+                    console.log('Fatch Error', error)
+                });
+        }
+    
+        render() {
+            ...
+        }
+    }
+
+## 3.4 데이터 불변성
+Object.assign같은 복사본을 만들기 위해서 사용하는 메소드들을 사용해서 복사본을 만들고 수정해서 this.setState()에 적용할 수 있다. 그런데 assign은 deep copy가 되지 않으니 deep copy가능한 기능을 써야할 경우 React는 그런 기능을 위한 update라는 기능을 지원한다.
+
+update를 사용하기 위해선 아래와 같은 명령어를 입력해서 라이브러리를 설치 해야한다.
+
+    npm install react-addons-update
+
+### 3.4.1 Update
+update는 2개의 파라메터를 받는다. 첫번째 파라메터는 업데이트 하려는 객체나 배열을 지정하고 두번째 파라메터는 변경을 수행할 위치와 수행할 유형을 통한 값을 지정한다.
+
+#### 3.4.1.1 $push
+
+    let ori = {
+        name : 'KAKAI',
+        status : {
+            power : 10,
+            agility : 5
+        },
+        item : [
+            { name : 'baba sword', attackPoint : 10 },
+            { name : 'baba hat', dependsPoint : 3 }
+        ]
+    };
+
+    // 새로운 Ori를 만들고 복사본을 생성할 수 있다.
+    // 일반적으로 item을 추가할 경우 ori와 newOri둘다 변경이 되겟지만 update를 사용하면 newOri만 추가된 item을 하나를 가지게 된다. ($push)
+    let newOri = update(ori, { item: {$push: [{ name: 'baba consoup', hpPoint : 10 }]}});
+
+    console.log(ori);
+    console.log(newOri);
+    
+#### 3.4.1.2 배열 Index    
+배열 인덱스를 사용해서 변경할 위치를 찾아서 수정 할 수도 있다.
+
+    // index의 위치를 통해 값을 update할 수 있다.
+    let newOri2 = update(ori, {
+        item : {
+            0: {$set : { name: "baba Hamer", attackPoint : 20 }}
+        }
+    });
+
+#### 3.4.1.3 사용 가능한 명령들
+
+1. $push : 배열 끝부분에 요소를 추가한다.
+2. $unshift : 배열 앞부분에 요소를 추가한다. 
+3. $splice : 배열의 요소 제거/추가 같은 배열의 내용을 변경한다. 일반 javascript splice와 틀린점은 splice매개변수를 포함한 배열을 제공해야 한다는 것이다.
+4. $set : 대상을 대체 한다
+5. $merge : 지정한 객체의 키를 대상과 merge한다. merge란?(있으면 변경, 없으면 추가) 
+6. $apply : 현재 값을 지정한 함수로 전달하고 함수에서 리턴한 결과값으로 update한다.
+
+
+
+

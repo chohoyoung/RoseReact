@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {render} from 'react-dom';
-import KanbanBoard from './KanbanBoard';
+import KanbanBoardContainer from './KanbanBoardContainer';
 
 let cardsList = [
     {
@@ -38,7 +38,7 @@ let cardsList = [
 ];
 
 
-render(<KanbanBoard cards={cardsList} />, document.getElementById('root'));
+render(<KanbanBoardContainer />, document.getElementById('root'));
      
 /*
 class Song extends Component {
