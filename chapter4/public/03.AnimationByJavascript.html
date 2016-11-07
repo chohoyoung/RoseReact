@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>03. AnimationByJavascript</title>
+    <style>
+        .sidebar{
+            background-color: #eee;
+            box-shadow: 1px 0 3px #888888;
+            position: absolute;
+            width: 15rem;
+            height: 100%;
+        }
+
+        .sidebar-transition {
+            opacity: 0;
+            left: -15rem;
+        }
+
+        .sidebar-transition-active {
+            opacity: 1;
+            left: 0;
+            transition: ease-in-out 0.5s;
+        }
+    </style>
+  </head>
+  <body>
+    <button onclick="document.querySelector('.sidebar').classList.add('sidebar-transition-active')" >&#9776</button>
+    <div class="sidebar sidebar-transition">
+        <ul>
+            <li>sample 1</li>
+            <li>sample 2</li>
+            <li>sample 3</li>
+            <li>sample 4</li>
+            <li>sample 5</li>
+        </ul>
+    </div>
+  </body>
+</html>

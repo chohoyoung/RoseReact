@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>02. KeyFrameAnimation</title>
+    <style>
+        body {
+            text-align: center;
+        }
+
+        @Keyframes push-heart {
+            0% { transform: none; }
+            50% { transform: scale(1.4); }
+            100% {transform: none; }
+        }
+
+        .heart {
+            font-size: 10rem;
+            color: #FF0000;
+        }
+
+        .heart:hover {
+            animation: push-heart .5s infinite;
+            transform-origin: center;
+        }
+    </style>
+  </head>
+  <body>
+    <div class="heart">&hearts;</div>
+  </body>
+</html>
