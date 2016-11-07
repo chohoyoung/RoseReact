@@ -200,6 +200,37 @@ update는 2개의 파라메터를 받는다. 첫번째 파라메터는 업데이
 5. $merge : 지정한 객체의 키를 대상과 merge한다. merge란?(있으면 변경, 없으면 추가) 
 6. $apply : 현재 값을 지정한 함수로 전달하고 함수에서 리턴한 결과값으로 update한다.
 
+#### 낙관적 업데이트 롤백
+낙관적 업데이트란, 실제 서버에 변경이 실제로 이루어졌는지 여부에 대한 응답을 기다리지 않고 UI상에서 바로 처리하는 것을 뜻한다. 이렇게 가면 실제 사용자는 서버의 응답을 기다릴 필요도 없어서 좋다, 하지만 만약 오류가 발생했을 경우는 어떻게 해야할까? 기존 항목의 데이터상태를 어딘가에 저장하고 있다가 문제가 발생했을 경우 그 상태값을 다시 반영을 해주면 된다.
+
+    // Task를 삭제 한다.
+    deleteTask(cardId, taskId, taskIndex) {
+        let prevState = this.state;
+        ...
+
+        // API호출해서 서버에서 삭제
+        fetch(`${API_URL}/cards/${cardId}/tasks/${taskId}`, {
+            method: 'delete',
+            headers: API_HEADERS
+        }).then((response) => {
+            if(!response.ok) {
+                //정상적인 성공이 아닐경우 Error를 발생 시킨다.
+                throw new Error("Server response wasn't OK");
+            }
+        }).catch((error) => {
+            console.log('Error Fatch is ', error);
+            this.setState(prevState);
+        });
+    }
+
+## 3.5 정리
+
+1. React Application에서 데이터는 항상 부모 컴포넌트에서 자식 컴포넌트로 한 방향으로만 전달이 된다.
+2. 만약 자식에서 부모에 데이터를 변경하거나 할 경우는 속성에 Callback메소드를 넘겨서 사용할 수 있다.
+3. 상태 저장 컴포넌트는 state를 사용해 상태가 변경될때마다 변경되는 컴포넌트이고 순수 컴포넌트는 prop만으로 데이터를 표시하는 컴포넌트를 뜻한다.
+4. 최대한 상태 저장 컴포넌트를 최소한으로 하고 순수 컴포넌트를 더 많이 만드는 것이 바람직하다.
+5. update모듈을 통해 deep copy를 사용할 수 있다.
+6. state변경은 this.state를 통해서 변경해야 한다. 직접 조작해서 this.state = ... 하고 싶지만 성능 개선과, React에서 말하는 패러다임 그리고 내부적인 문제가 발생할 수 있어서 React에서는 state를 직접 건들지 못하게 해놓았다.
 
 
 
