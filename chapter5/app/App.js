@@ -7,6 +7,7 @@ import Home from './Home';
 import About from './About';
 import Repos from './Repos';
 import RepoDetail from './RepoDetail';
+import ServerError from './ServerError';
 
 class App extends Component {
     render() {
@@ -34,6 +35,7 @@ render((
                 {/* UI를 중첩하려는 위치에 Route를 중첩해서 설정 한다. */}
                 <Route path="/repo/:repo_name" component={RepoDetail} />
             </Route>
+            <Route path="error" component={ServerError}/>
         </Route>
     </Router>
 ), document.getElementById('root'));

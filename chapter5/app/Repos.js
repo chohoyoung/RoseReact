@@ -16,6 +16,10 @@ class Repos extends Component {
             .then((response) => response.json())
             .then((responseData) => {
                 this.setState({repositories: responseData});
+                console.log(this.props.router)
+            })
+            .catch((error) => {
+                console.log(this.props.router.push('/error'));
             });
     }
 

@@ -146,15 +146,42 @@ Router는 path의 값을 우리가 원하는 형태로 설정을 할 수 있다.
     ...
         
 ### 5.1.7 Route를 프로그램으로 변경
-컴포넌트 안에서 프로그래밍 방식으로 라우트를 처리해야 할 경우가 있다. 예를 들면 특정 상황에서 이전페이지로 가던가 사용자를 다른 Route로 Redirect 하는것들이다. 이런 목적을 위해 Router는 mount된 모든 컴포넌트에 브라우저의 history를 관리하는 history객체를 제공한다. 이건 아래와 같은 메서드를 제공한다.
+컴포넌트 안에서 프로그래밍 방식으로 라우트를 처리해야 할 경우가 있다. 예를 들면 특정 상황에서 이전페이지로 가던가 사용자를 다른 Route로 Redirect 하는것들이다. 이런 목적을 위해 Router는 mount된 모든 컴포넌트에 브라우저의 history를 관리하는 router객체를 제공한다. 이건 아래와 같은 메서드들을 제공한다. 아래는 많이 쓰는 메소드이다. 자세한것은 **[여기](https://github.com/ReactTraining/react-router/blob/master/docs/API.md)**를 참고하기 바란다. 
 
-1. pushState : 새로운 URL로 이동하는 메서드 예를 들면 다음과 같다. history.pushState({data:1}, '/page/1')
-2. replaceState : pushState와 동일한 구문을 사용하며 현재 URL을 새로운 URL로 대채 한다.
+1. push : 새로운 URL로 이동한다.
 3. goBack : History에서 한 항목 뒤로 간다.
 4. goForward : History에서 한 항목 앞으로 간다.
 5. Go : n 또는 -n만큼 앞으로 또는 뒤로 간다.
 6. createHref : 라우터의 구성을 이용해 URL을 만든다.
 
+사용법은 아래와 같다.
 
- 
+    componentDidMount() {
+        fetch('https://api.github.com/users/pro-react/repos')
+            .then((response) => response.json())
+            .then((responseData) => {
+                this.setState({repositories: responseData});
+                console.log(this.props.router)
+            })
+            .catch((error) => {
+                console.log(this.props.router.push('/error'));  //오류가 발생시 /error를 호출한다.
+            });
+    }
+    
+### 5.1.8 History
+History는 URL과 세션관리를 추상화 해주고 여러 다른 브라우저, 테스트환경, 플랫폼에서 History Stack과 URL을 조작할 수 있는 공용 API를 제공한다. 히스토리 설정 방법은 아래와 같다.
 
+    render((
+        <Router history={browserHistory}>
+            <Route path="/" component={App}>
+                <IndexRoute component={Home} />
+                <Route path="/about" component={About} title="About Us" />
+                <Route path="/repos" component={Repos}>
+                    {/* UI를 중첩하려는 위치에 Route를 중첩해서 설정 한다. */}
+                    <Route path="/repo/:repo_name" component={RepoDetail} />
+                </Route>
+                <Route path="error" component={ServerError}/>
+            </Route>
+        </Router>
+    ), document.getElementById('root'));
+    
