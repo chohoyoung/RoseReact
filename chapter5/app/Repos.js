@@ -20,8 +20,16 @@ class Repos extends Component {
     }
 
     render() {
+        console.log("RENDER Repos");
         let repos = this.state.repositories.map((repo) => {
-            return <Link to={"/repos/details/" + repo.name} key={repo.id}>{repo.name}</li>
+            return <li key={repo.id}>
+                        <Link to={"/repo/" + repo.name}>{repo.name}</Link>;
+                    </li>
+        });
+
+        // this.props.children이 false로 평가 되지 않으면 React.cloneElement... 를 반환한다.
+        let renderChild = this.props.children && React.cloneElement(this.props.children, {
+            repositories: this.state.repositories
         });
 
         return (
@@ -30,7 +38,7 @@ class Repos extends Component {
                 <ul>
                     {repos}
                 </ul>
-                {this.props.children}
+                {renderChild}
             </div>
         );
     }
