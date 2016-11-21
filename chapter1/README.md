@@ -78,6 +78,45 @@ React는 컴포넌트를 만들고 재사용하고 조합하는 것이 가능합
             );
         }
     }
+
+## 1.7 state
+React는 쓰기 가능한 값을 state를 통해서 제공한다. 이 값은 this.setState()을 통해서 변경이 가능하다. 이 this.setState()가 실행되면 연관된 컴포넌트가 다시 렌더링 된다.
+    
+    class StateTestApp extends Component {
+        constructor() {
+            super(...arguments);
+            this.state = {
+                car : {
+                    hot1 : 'passion',
+                    hot2 : 'racing car',
+                    limit : 0
+                }
+            }
+        }
+    
+        goEngine() {
+            this.setState({
+                car : {
+                    hot1 : 'passion',
+                    hot2 : 'racing car',
+                    limit : this.state.car.limit + 1
+                }
+            })
+        }
+    
+        render() {
+            console.log("RENDERING...");
+            // setState구문이 실행이되면, 아니 state값이 변경이 되면 무조건 렌더링을 다시 한다.
+            return(
+                <div>
+                    <h3>{this.state.car.hot1}</h3>
+                    <h3>{this.state.car.hot2}</h3>
+                    <h3>{this.state.car.limit}</h3>
+                    <button onClick={this.goEngine.bind(this)}>Engine go</button>
+                </div>
+            );
+        }
+    }
  
-## 1.5 state
-React는 쓰기 가능한 값을 state를 통해서 제공한다. 이 값은 this.setState()을 통해서 변경이 가능하다.
+
+
