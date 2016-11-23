@@ -4,17 +4,33 @@ ReactJs
 # 2. DOM 추상화의 내부
 ## 2.1 React Event
 ### 2.1.1 DOM Event Listner
-React는 Camel표기법을 사용한다. 예를 들면 onclick이 아니라 onClick처럼 사용해야 한다.
+HTMLTag에서 작성하는 이벤트는 전역 Scope를 오염시키거나 거대한 HTML안에서 찾기도 힘들고 성능의 떨어짐과 메모리 누수의 원인이 되기도 하다. JSX는 HTML Tag에서 작성하는 이벤트와 거의 비슷하게 이벤트 작성 방법을 제공합니다. 이것은 실제 HTML Tag 이벤트와 다르게 문제는 제거한 버전입니다. 사용방법은 거의 비슷하지만 다른것은 Camel표기법을 사용하는 겁니다. 예를 들면 onclick은 onClick으로 사용해야 합니다.
+### 2.1.2 Event 종류
+#### 2.1.2.1 Touch/Mouse Event
+onTouchStart, onTouchMove, onTouchEnd, onTouchCancel, onClick, onDoubleClick, onMouseDown, onMouseUp, onMouseOver, onMouseMove, onMouseEnter, onMouseLeave, onMouseOut, onContextMenu, onDrag, onDragEnter, onDragLeave, onDragExit, onDragStart, onDragEnd, onDragOver, onDrop
+#### 2.1.2.2 Key Event
+onKeyDown, onKeyUp, onKeyPress
+#### 2.1.2.3 Focus/Form Event
+onFocus, onBlur, onChange, onInput, onSubmit
+#### 2.1.2.4 기타 Event
+onScroll, onWheel, onCopy, onCut, onPaste
 ## 2.2 JSX
-JSX는 Javascript 코드안에서 선언적인 XML 스타일의 구문을 작성할 수 있게 해주는 React의 선택적 Javascript 구문 확장이다.
-### 2.2.1 JSX와 HTML의 차이
+JSX는 Javascript 코드안에서 선언적인 XML 스타일의 구문을 작성할 수 있게 해주는 React의 선택적 Javascript 구문 확장이다. JSX를 사용할지 말지는 선택이지만 JSX장점은 다음과 같다.
 
-1. Tag 속성은 Camel 표기법으로 작성한다.
-2. 모든 요소는 짝이 맞아야 한다.
-3. 속성 이름이 DOM API에 기반을 둔다. (attr이 class가 아닌 className을 따른다.)
+1. XML형태로 UI를 표현하는데 적합하다.
+2. 어플리케이션의 구조를 시각화 하기 쉬우며 코드량이 줄어든다.
+3. Javascript언어로 변형이 되므로 언어의 의미를 변형하지 않는다.
+
+### 2.2.1 JSX와 HTML의 차이
+#### 2.2.1.1 Tag 속성은 Camel 표기법으로 작성한다.
+#### 2.2.1.2 모든 요소는 짝이 맞아야 한다.
+#### 2.2.1.3 속성 이름이 DOM API에 기반을 둔다. (attr이 class가 아닌 className을 따른다.)
+
+
 
 ### 2.2.2. JSX 특이점
 #### 단일 루트 노드
+React 컴포넌트는 무조건 단일 루트 노드만 렌더링 할 수 있다. 즉 아래와 같은 형태를 따라야 한다.
 
     // 이렇게 호출을 할 수 없다.
     return (
