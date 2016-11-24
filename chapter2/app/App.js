@@ -37,7 +37,7 @@ let cardsList = [
     }
 ];
 
-render(<KanbanBoard cards={cardsList} />, document.getElementById('root'));
+//render(<KanbanBoard cards={cardsList} />, document.getElementById('root'));
        
 class Search extends React.Component {
     constructor() {
@@ -62,8 +62,20 @@ class Search extends React.Component {
     }
        
     render() {
+        let eStyle = true;
+        let eSpan = 'ko1';
+        let bFlag = true;
+
+        let classNamed = "";
+        if(bFlag) { classNamed = "Min" }
+
         return(
             <form onSubmit={this.handleSubmit}>
+                <div className={classNamed}>Cgoo</div>
+                <div className={eStyle? "test" : ""}>Hgoo</div>
+                <div>
+                    {eSpan === 'ko'? <span>ko</span> : <span>no</span>}
+                </div>
                 <div className="formGroup">
                     xPoint : <input name="x" type="text" />
                 </div>
@@ -86,6 +98,6 @@ class Search extends React.Component {
     }
 }
 
-//render(<Search />, document.getElementById('root'));
+render(<Search />, document.getElementById('root'));
     
        

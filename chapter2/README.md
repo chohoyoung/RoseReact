@@ -23,10 +23,18 @@ JSX는 Javascript 코드안에서 선언적인 XML 스타일의 구문을 작성
 
 ### 2.2.1 JSX와 HTML의 차이
 #### 2.2.1.1 Tag 속성은 Camel 표기법으로 작성한다.
-#### 2.2.1.2 모든 요소는 짝이 맞아야 한다.
+
+    <input type="button" value="Move focus y" onClick={this.handleClick.bind(this)} />
+
+#### 2.2.1.2 모든 요소는 짝이 맞아야 하며 꼭 닫는 태그가 있어야 한다.
+
+    <br> <input> (X)
+    <br /> <input /> (O)
+
 #### 2.2.1.3 속성 이름이 DOM API에 기반을 둔다. (attr이 class가 아닌 className을 따른다.)
 
-
+    <input class='styleClass' /> (X)
+    <input className='styleClass' /> (O)
 
 ### 2.2.2. JSX 특이점
 #### 단일 루트 노드
@@ -47,11 +55,29 @@ React 컴포넌트는 무조건 단일 루트 노드만 렌더링 할 수 있다
     )
     
 ### 2.3 조건절
-JSX는 결국 React코드로 변환하기에 if문을 마음대로 쓸수 없다. 대신 삼항연산자를 쓰거나, Render할때 분기를 하는 것이아닌 밖에서 변수로 정의 하고 변수를 반영하는 방법으로 할 수 있다.
+JSX는 결국 React코드로 변환하기에 if문을 마음대로 쓸수 없다. 대신 삼항연산자를 쓰거나, Render할때 분기를 하는 것이 아닌 밖에서 변수로 정의 하고 변수를 반영하는 방법으로 할 수 있다.
+
+    !! 내부에서 삼항연산자 사용 !!
+    let eStyle = true;
+    ...
+    <div className={eStyle? "test" : ""}>Hgoo</div>
+    
+    let eSpan = 'ko1';
+    ...
+    <div>
+        {eSpan === 'ko'? <span>ko</span> : <span>no</span>}
+    </div>
+    
+    !! 외부로 뺄 경우 !!
+    let classNamed = "";
+    if(bFlag) { classNamed = "Min" }
+            
+    <div className={classNamed}>Cgoo</div>
+    
 #### 2.4 공백
 개행은 공백으로 인정안해주기 때문에  {" "}을 넣어야 한다.
 #### 2.5 주석
-JSX는 HTML이 아니므로 HTML주석을 달 수 없다. 그래서 별도 주석 방식을 제공한다. 주의사항은 태그의 자식으로 주석을 넣을 경우 중괄호가 필요하다.
+JSX는 HTML이 아니므로 HTML주석을 달 수 없다. 그래서 별도 주석 방식을 제공한다. 주의사항은 태그의 자식으로 주석을 넣을 경우 중괄호가 필요하다. 또는 분기를 외부로 뺄 수도 있다.
 
     let rect = (
         <Rect>
