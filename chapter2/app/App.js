@@ -43,7 +43,8 @@ class Search extends React.Component {
     constructor() {
         super();
         this.state = {
-            searchTerm: "React"  
+            searchTerm: "React",
+            xText: "text"
         };
     }
 
@@ -60,6 +61,17 @@ class Search extends React.Component {
     handleClick(event) {
         this.refs.ypointinput.focus();
     }
+
+    // text 체인지 이벤트
+    changeTextEvent(e) {
+        this.setState({
+            xText : e.target.value
+        });
+    }
+
+    clickBtn(e) {
+        this.refs.cText.focus();
+    }
        
     render() {
         let eStyle = true;
@@ -69,31 +81,45 @@ class Search extends React.Component {
         let classNamed = "";
         if(bFlag) { classNamed = "Min" }
 
+        let inHTML = "<h3>hahaha</h3>";
+
+        console.log("RENDER");
+
         return(
-            <form onSubmit={this.handleSubmit}>
-                <div className={classNamed}>Cgoo</div>
-                <div className={eStyle? "test" : ""}>Hgoo</div>
-                <div>
-                    {eSpan === 'ko'? <span>ko</span> : <span>no</span>}
-                </div>
-                <div className="formGroup">
-                    xPoint : <input name="x" type="text" />
-                </div>
-                <div className="formGroup">
-                    xPoint : <input name="y" type="text" ref="ypointinput"/>
-                </div>
-                <button type="submit">Submit</button>
-                <input type="button" value="Move focus y" onClick={this.handleClick.bind(this)} />
-                <div>
-                    Search Term: <input type="search" value={this.state.searchTerm} onChange={this.handleChange.bind(this)} />
-                    <textarea value="You raise me up"></textarea>
-                    <select value="B">
-                        <option value="A">You</option>
-                        <option value="B">Raise</option>
-                        <option value="C">me up</option>
-                    </select>
-                </div>
-            </form>
+            <div>
+                <button onClick={this.clickBtn.bind(this)}>FOCUS</button>
+                ref : 사용 <input id="C" name="C" type="text" ref="cText"/>
+                비제어 컴포넌트 : <input type="text" />ㄱ
+                비제어 컴포넌트 디폴트값: <input type="text" defaultValue="TEST"/>
+                변경 불가능 : <input type="text" value="입력란" />
+                변경 가능1 : <input type="text" onChange={this.changeTextEvent.bind(this)} />
+                변경 가능1-1 : <input type="text" value={this.state.xText} readOnly/>
+                <form onSubmit={this.handleSubmit}>
+                    <span dangerouslySetInnerHTML={{__html:inHTML}}></span>
+                    <div className={classNamed}>Cgoo</div> {" "}
+                    <div className={eStyle? "test" : ""}>Hgoo</div>
+                    <div>
+                        {eSpan === 'ko'? <span>ko</span> : <span>no</span>}
+                    </div>
+                    <div className="formGroup">
+                        xPoint : <input name="x" type="text" />
+                    </div>
+                    <div className="formGroup">
+                        xPoint : <input name="y" type="text" ref="ypointinput"/>
+                    </div>
+                    <button type="submit">Submit</button>
+                    <input type="button" value="Move focus y" onClick={this.handleClick.bind(this)} />
+                    <div>
+                        Search Term: <input type="search" value={this.state.searchTerm} onChange={this.handleChange.bind(this)} />
+                        <textarea value="You raise me up"></textarea>
+                        <select value="B">
+                            <option value="A">You</option>
+                            <option value="B">Raise</option>
+                            <option value="C">me up</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
         )
     }
 }
